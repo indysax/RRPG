@@ -6,7 +6,7 @@ using namespace std;
 		void loginscreen();
 		void setuser(string);
 		void setpassword(string);
-		void createuser();
+		bool createuser();
 		void createpassword();
 		bool checkuser();
 		bool checkpassword();

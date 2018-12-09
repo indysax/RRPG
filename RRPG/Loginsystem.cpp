@@ -13,34 +13,32 @@ void MY_login::loginscreen() {
 		}
 		else{
 			displaylogin("");
-			Sleep(100);
+			Sleep(200);
 			system("cls");
 			displaylogin("2");
-			Sleep(100);
+			Sleep(200);
 			system("cls");
 		}
 	 }
-start:
-	displaylogin("");
-	cin >> mode;
-	switch (mode)
-	{
-	case 1 :
-		cout << "帳號: "; createuser(); cout << "密碼: ";  createpassword();
-		Initial();
-		system("pause");system("cls");
-		goto start;
-	case 2:
-		cout << "帳號: "; if (checkuser()) { goto start; }; cout << "密碼: ";  if (checkpassword()) { goto start; };
-		system("pause"); system("cls");
-		return;
-	case -1:
-		exit(1);
-	default:
-		cout << "請輸入有效數字!!" << endl;system("pause");system("cls");
-		loginscreen();
+	while (1) {
+		displaylogin("");
+		cin >> mode;
+		switch (mode)
+		{
+		case 1:
+			cout << "帳號: "; if (createuser()) { continue; } cout << "密碼: ";  createpassword();
+			Initial();
+			system("pause"); system("cls");
+		case 2:
+			cout << "帳號: "; if (checkuser()) { continue; } cout << "密碼: ";  if (checkpassword()) { continue; }
+			system("pause"); system("cls");
+			return;
+		case -1:
+			exit(1);
+		default:
+			cout << "請輸入有效數字!!" << endl; system("pause"); system("cls");
+		}
 	}
-	
 }
 void MY_login::displaylogin(string n) {
 	ifstream log_f;
@@ -50,7 +48,7 @@ void MY_login::displaylogin(string n) {
 		cout << log_data << endl;
 	}
 	log_f.close();
-	cout << "1. █ 註冊 █" << endl << "2. █ 登入 █ " << endl;
+	cout << "1. █ 註冊 █" << endl << "2. █ 登入 █ " << endl << "-1.█ 離開 █" << endl;
 }
 void MY_login::setuser(string _user) {
 	USER = _user;
@@ -64,35 +62,31 @@ string MY_login::getuser() {
 string MY_login::getpassword() {
 	return PASSWORD;
 }
-void MY_login::createuser() {
+bool MY_login::createuser() {
 	ifstream fin;
-	string in_data,EXIT ="-1";
-have_user:
+	string in_data;
 	cin >> in_data;
-	if (in_data == EXIT)
-		exit(1);
 	in_data = in_data + ".txt";
 	fin.open("Users\\"+in_data);
-	setuser(in_data);
 	if (fin.is_open()) {
 		cout << "這個帳號已經被人認領囉 QQ 請重新輸入~" << endl;
 		fin.close();
 		system("pause");
 		system("cls");
-		displaylogin("");
-		cout << "帳號: " << endl;
-		goto have_user;
+		return 1;
 	}
 	else
 	{
 		ofstream fout;
+		setuser(in_data);
 		fout.open("Users\\" + in_data);
 		fout.close();
+		return 0;
 	}
 
 }
 void MY_login::createpassword() {
-	ofstream fout(("Users\\" + getuser()));
+	ofstream fout("Users\\" + getuser());
 	string in_pass;
 	cin >> in_pass;
 	setpassword(in_pass);
@@ -139,7 +133,7 @@ int MY_login::getpasswordsize() {
 void MY_login::Initial() {
 	ofstream fout(("Users\\" + getuser()),ios::app);
 	if (fout.is_open()) {
-		string s = "\n0 0\n0 0\n0 0";
+		string s =  "\nSAVE100\nSAVE200\nSAVE300" ;
 		cout << s;
 		fout << s;
 		fout.close();
