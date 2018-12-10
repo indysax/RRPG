@@ -1,6 +1,6 @@
 #include<string>
 using namespace std;
-	class MY_login
+	class login
 	{
 	public:
 		void loginscreen();

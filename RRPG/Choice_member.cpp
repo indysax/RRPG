@@ -2,17 +2,19 @@
 #include<iostream>
 #include<string>
 #include<sstream>
+#include<Windows.h>
 #include"Choice_member.h"
 using namespace std;
 void choice::choicescreen(string _user) {
 	Save(_user);
 	while (1) {
 		display_job_pic();
-		if (select()) {
+		int cou = select();
+		if (cou) {
 			system("cls");
 		}
 		else {
-			system("cls");
+			return;
 		}
 	}
 }   //選擇畫面  
@@ -58,11 +60,11 @@ int choice::select(){
 		if (SEL == 4) {
 			cout << "1~3建立角色" << endl;
 			cin >> num;
-			if (getjob(num-1) != 0) { cout << "要有空間才可以建立角色喔!! "; system("pause"); return 0; }
-			newdata(num); return 0;
+			if (getjob(num - 1) != 0) { cout << "要有空間才可以建立角色喔!! "; system("pause"); return 5;}
+			newdata(num); 
 		}
 		else if (SEL == 5) {
-			DEL(); system("pause"); return 0;
+			DEL(); system("pause");
 		}
 		else if (SEL == 1 || SEL == 2 || SEL == 3) {
 			return User_job[SEL-1];
@@ -71,9 +73,11 @@ int choice::select(){
 		{
 			return 0;
 		}
+		return 5;
 	}
 }
 int choice::newdata(int _num) {
+	int A = 1;
 	ifstream fin("Info\\job_text.txt");
 	if (!fin.is_open()) {
 		cout << "file error!" << endl; system("pause"); exit(1);
@@ -82,18 +86,38 @@ int choice::newdata(int _num) {
 		system("cls");
 		string ss;
 		while (!fin.eof()) {
-			getline(fin, ss);
+			getline(fin,ss);
+			if (ss == "!") {
+				A = A + fin.tellg();
+				break;
+			}
+			Sleep(333);
 			cout << ss << endl;
 		}
-		fin.seekg(0,ios::beg);
+		int  race;
+		cout << "請用數字選擇你的種族:" << endl;
+		cin >> race;
+		if (0 < race && race < 5) {
+			User_race[_num - 1] = race;
+			break;
+		}
+	}
+	while (1) {
+		system("cls");
+		string ss;
+		fin.seekg(A, ios::beg);
+		while (!fin.eof()) {
+			getline(fin, ss);
+			Sleep(333);
+			cout << ss << endl;
+		}
 		int  job;
-		cout << "你的選擇是?" << endl;
+		cout << "請用數字選擇你的職業:" << endl;
 		cin >> job;
-		if (0 < job && job < 4) {
+		if (0 < job && job < 5) {
 			User_job[_num - 1] = job;
 			break;
 		}
-		
 	}
 	fin.close();
 	return 0;
@@ -136,9 +160,9 @@ string choice::racename(int _num) {
 	case 2:
 		return "獸人";
 	case 3:
-		return "矮人";
+		return "哥布";
 	case 4:
-		return "地精";
+		return "精靈";
 	default:
 		return "ＸＸ";
 	}

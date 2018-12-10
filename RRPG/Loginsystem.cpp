@@ -5,7 +5,7 @@
 #include<conio.h>
 #include"Loginsystem.h"
 using namespace std;
-void MY_login::loginscreen() {
+void login::loginscreen() {
 	int mode = 0;
 	while (1) {
 		if (_kbhit()) {
@@ -40,7 +40,7 @@ void MY_login::loginscreen() {
 		}
 	}
 }
-void MY_login::displaylogin(string n) {
+void login::displaylogin(string n) {
 	ifstream log_f;
 	string log_data = "";
 	log_f.open("Themes\\Theme"+n+".txt");
@@ -50,19 +50,19 @@ void MY_login::displaylogin(string n) {
 	log_f.close();
 	cout << "1. █ 註冊 █" << endl << "2. █ 登入 █ " << endl << "-1.█ 離開 █" << endl;
 }
-void MY_login::setuser(string _user) {
+void login::setuser(string _user) {
 	USER = _user;
 }
-void MY_login::setpassword(string _password) {
+void login::setpassword(string _password) {
 	PASSWORD = _password;
 }
-string MY_login::getuser() {
+string login::getuser() {
 	return USER;
 }
-string MY_login::getpassword() {
+string login::getpassword() {
 	return PASSWORD;
 }
-bool MY_login::createuser() {
+bool login::createuser() {
 	ifstream fin;
 	string in_data;
 	cin >> in_data;
@@ -85,7 +85,7 @@ bool MY_login::createuser() {
 	}
 
 }
-void MY_login::createpassword() {
+void login::createpassword() {
 	ofstream fout("Users\\" + getuser());
 	string in_pass;
 	cin >> in_pass;
@@ -94,7 +94,7 @@ void MY_login::createpassword() {
 	fout.close();
 	cout << "註冊成功" << endl;
 }
-bool MY_login::checkuser() {
+bool login::checkuser() {
 	ifstream fin;
 	string my_user;
 	cin >> my_user;
@@ -110,7 +110,7 @@ bool MY_login::checkuser() {
 		return 1;
 	}
 }
-bool MY_login::checkpassword() {
+bool login::checkpassword() {
 	ifstream fin;
 	string PASS;
 	string my_password;
@@ -127,10 +127,10 @@ bool MY_login::checkpassword() {
 		return 1;
 	}
 }
-int MY_login::getpasswordsize() {
+int login::getpasswordsize() {
 	return PASSWORD.size();
 }
-void MY_login::Initial() {
+void login::Initial() {
 	ofstream fout(("Users\\" + getuser()),ios::app);
 	if (fout.is_open()) {
 		string s =  "\nSAVE100\nSAVE200\nSAVE300" ;
